@@ -80,7 +80,10 @@ def registration_action():
     return redirect(url_for('home'))
 
 @app.route('/tasks', methods=['GET'])
-def tasks():
+def tasks(): 
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
     user_id = session['user_id']
     user = get_user_by_id(user_id)
     tasks = get_tasks_by_user_id(user_id)
@@ -88,11 +91,13 @@ def tasks():
 
 @app.route('/tasks', methods=['POST'])
 def tasks_action():
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
+    error = None
     user_id = session['user_id']
     user = get_user_by_id(user_id)
     tasks = get_tasks_by_user_id(user_id)
-
-    error = None
 
     if not request.form['title']:
         eror="Требуется ввести заголовок задачи"
@@ -107,17 +112,23 @@ def tasks_action():
 
 @app.route('/tasks/<id>', methods=['GET'])
 def task(id):
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
     user_id = session['user_id']
     user = get_user_by_id(user_id)
-    task = get_task_by_id(id, user_id)
-    return render_template('pages/task.html', page_title='Задача | Манагер задач', user=user, error=error, task=task)
+    task = get_task_by_id(id)
+    return render_template('pages/task.html', page_title='Задача | Манагер задач', user=user, task=task)
 
 @app.route('/tasks/<id>', methods=['PUT'])
 def task_update(id):
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
+    error = None
     user_id = session['user_id']
     user = get_user_by_id(user_id)
     task = get_task_by_id(id, user_id)
-    error = None
 
     if not request.form['title']:
         eror="Требуется ввести заголовок задачи"
@@ -132,6 +143,9 @@ def task_update(id):
 
 @app.route('/tasks/<id>', methods=['DELETE'])
 def task_remove(id):
+    if 'user_id' not in session:
+        return redirect(url_for('home'))
+
     user_id = session['user_id']
     user = get_user_by_id(user_id)
     tasks = get_tasks_by_user_id(user_id)

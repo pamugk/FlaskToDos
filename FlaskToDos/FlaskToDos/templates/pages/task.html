@@ -1,32 +1,41 @@
-﻿{% extends "layout.html" %}
+﻿{% extends "layouts/base_layout.html" %}
 
 {% block main %}
-    <section class="card card-default w-50 mx-auto">
-        <h4 class="card-header">Редактирование задачи</h4>
+<section class="card card-default w-50 mx-auto">
+    <h4 class="card-header">Редактирование задачи</h4>
 
-        <form action="/login" method="POST" class="card-body">
-            {% if error %}
-            <div class="alert alert-danger">
-                {{ error }}
-            </div>
-            {% endif %}
-            {% if task %}
-            <div class="form-group">
-                <label for="title-input">Заголовок:</label>
-                <input type="text" name="title" class="form-control" id="title-input" placeholder="Заголовок" value="{{task.title}}">
-            </div>
-            <div class="form-group">
-                <label for="description-input">Описание:</label>
-                <input type="text" name="description" class="form-control" id="description-input" placeholder="Описание" value="{{task.description}}">
-            </div>
-            <input type="submit" class="btn btn-primary" value="Сохранить" />
-            {% else %}
-            <div class="alert alert-info text-center">
-                Похоже, вы пытаетесь получить доступ к чужой задаче.<br />
-                Нехорошооо.<br />
-                Одумайтесь, пока не поздно, не то хуже будет.<br />
-            </div>
-            {% endif %}
-        </form>
-    </section>
+    {% if error %}
+    <form action="/login" method="POST" class="card-body">
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+        {% endif %}
+        {% if task %}
+        {% if task.user_id == user.id %}
+        <div class="form-group">
+            <label for="title-input">Заголовок:</label>
+            <input type="text" name="title" class="form-control" id="title-input" placeholder="Заголовок" value="{{task.title}}">
+        </div>
+        <div class="form-group">
+            <label for="description-input">Описание:</label>
+            <input type="text" name="description" class="form-control" id="description-input" placeholder="Описание" value="{{task.description}}">
+        </div>
+        <input type="submit" class="btn btn-primary" value="Сохранить" />
+        {% else %}
+        <div class="alert alert-info text-center">
+            Похоже, вы пытаетесь получить доступ к чужой задаче.<br />
+            Нехорошооо.<br />
+            Одумайтесь, пока не поздно, не то хуже будет. 😠 <br />
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="alert alert-info text-center">
+            Удивительное дело, но задачи с таким id ещё нет.<br />
+            Непонятно, каким макаром вы сюда попали, <br />
+            но точно можно сказать только одно: вам тут делать нечего.<br />
+            Так что убирайтесь-ка с этой страницы
+        </div>
+        {% endif %}
+    </form>
+</section>
 {% endblock %}

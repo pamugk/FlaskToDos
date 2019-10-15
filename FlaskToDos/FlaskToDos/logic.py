@@ -14,8 +14,8 @@ def add_user(login, password):
 def check_user_password(user, password):
     return check_password_hash(user.password, password)
 
-def get_task_by_id(id, user_id):
-    return Task.query.filter(Task.id == id and Task.user_id == user_id).first()
+def get_task_by_id(id):
+    return Task.query.filter(Task.id == id).first()
 
 def get_task_by_title(title, user_id):
     return Task.query.filter(Task.title == title and Task.user_id == user_id).first()
@@ -30,7 +30,9 @@ def get_user_by_login(login):
     return User.query.filter(User.login == login).first()
 
 def remove_task(user_id, task_id):
-    task = get_task_by_id(task_id, user_id)
+    if task.user_id != user_id:
+        return
+    task = get_task_by_id(task_id)
     if (task == None):
         return
     db_session.delete(task)
@@ -47,7 +49,9 @@ def validate_task_title(title):
     return title.strip() != ''
 
 def update_task(user_id, task_id, title, description):
-    task = get_task_by_id(task_id, user_id)
+    if task.user_id != user_id:
+        return task
+    task = get_task_by_id(task_id)
     if (task == None):
         return None
     task.title = title
