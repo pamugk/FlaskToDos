@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/content/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/content/style.css">
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Манагер задач</a>
+
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            {% if user %}
+            <li class="nav-item">
+                <a class="nav-link" href="/tasks">Задачи</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/about">О сайте</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+            {% if user %}
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-user-circle"></i> {{ user.login }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Выход</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt"></i> Вход</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/registration"><i class="fas fa-user-plus"></i> Регистрация</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="container mt-5">
+        {% block main %}{% endblock %}
+    </main>
+
+    <footer class="footer font-small blue">
+        <p class="text-center">
+            Пермь, ПГНИУ, 11 октября 2019.<br>
+            Склёпано на коленке криворуким студентом© по best practice.
+        </p>
+    </footer>
+
+    <!-- Пока нам не нужен JS -->
+    <script defer src="/static/fontawesome/js/solid.min.js"></script>
+    <script defer src="/static/fontawesome/js/fontawesome.min.js"></script>
+    <!-- <script src="/static/scripts/jquery.min.js"></script> -->
+    <!-- <script src="/static/scripts/popper.min.js"></script> -->
+    <!-- <script src="/static/scripts/bootstrap.min.js"></script> -->
+</body>
+</html>

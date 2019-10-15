@@ -1,0 +1,22 @@
+html {
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    align-content: stretch;
+    align-items: stretch;
+    color: #343434;
+    color: var(--black-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    height: 100%;
+    margin-bottom: 60px;
+}
+
+.footer {
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

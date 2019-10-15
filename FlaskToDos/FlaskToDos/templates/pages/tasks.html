@@ -1,0 +1,36 @@
+﻿{% extends "layouts/base_layout.html" %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="rowcard card-default w-50 mx-auto col-sm">
+                <h4 class="card-header">Добавление задачи</h4>
+                <form action="/tasks" method="POST">
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="title-input">Заголовок:</label>
+                        <input type="text" name="title" class="form-control" id="title-input" placeholder="Заголовок">
+                    </div>
+                    <div class="form-group">
+                        <label for="description-input">Описание:</label>
+                        <input type="text" name="description" class="form-control" id="description-input" placeholder="Такая-то задача">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Добавить" />
+                </form>
+            </div>
+
+            <div class="card card-default w-50 mx-auto col-sm">
+                <h4 class="card-header">Список задач</h4>
+                <ul>
+                    {% for task in tasks %}
+                    <li><a href="/tasks/{{ task.id }}">{{ task.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
