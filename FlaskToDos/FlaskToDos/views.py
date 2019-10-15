@@ -120,7 +120,7 @@ def task(id):
     task = get_task_by_id(id)
     return render_template('pages/task.html', page_title='Задача | Манагер задач', user=user, task=task)
 
-@app.route('/tasks/<id>', methods=['PUT'])
+@app.route('/tasks/<id>', methods=['POST'])
 def task_update(id):
     if 'user_id' not in session:
         return redirect(url_for('home'))
@@ -128,28 +128,32 @@ def task_update(id):
     error = None
     user_id = session['user_id']
     user = get_user_by_id(user_id)
-    task = get_task_by_id(id, user_id)
+    task = get_task_by_id(id)
 
-    if not request.form['title']:
+    if not task:
+        eror="Задача не найдена"
+    elif not request.form['title']:
         eror="Требуется ввести заголовок задачи"
     elif not validate_task_title(request.form['title']):
         error="Заголовок задачи пуст или содержит запрещённые символы"
-    elif get_task_by_title(request.form['title'], session['user_id']):
+    elif get_task_by_title(request.form['title'], session['user_id']).id != task.id:
         error="Задача с таким заголовком уже используется"
     else:
-        task = update_task(session['user_id'], id, request.form['title'], request.form['description'])
+        task = update_task(user_id, task, request.form['title'], request.form['description'])
+    if not error:
+        return redirect(url_for('tasks'))
+    else:
+        return render_template('pages/task.html', page_title='Задача | Манагер задач', user=user, error=error, task=task)
 
-    return render_template('pages/task.html', page_title='Задача | Манагер задач', user=user, error=error, task=task)
-
-@app.route('/tasks/<id>', methods=['DELETE'])
+@app.route('/tasks/<id>/delete', methods=['POST'])
 def task_remove(id):
     if 'user_id' not in session:
         return redirect(url_for('home'))
 
     user_id = session['user_id']
     user = get_user_by_id(user_id)
-    tasks = get_tasks_by_user_id(user_id)
     remove_task(user_id, id)
+    tasks = get_tasks_by_user_id(user_id)
     return render_template('pages/tasks.html', page_title='Задачи | Манагер задач', user=user, tasks=tasks)
 
 @app.route('/logout')

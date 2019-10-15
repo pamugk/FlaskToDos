@@ -23,13 +23,23 @@
                 </form>
             </div>
 
-            <div class="card card-default w-50 mx-auto col-sm">
+            <div class="rowcard card-default w-50 mx-auto col-sm">
                 <h4 class="card-header">Список задач</h4>
-                <ul>
-                    {% for task in tasks %}
-                    <li><a href="/tasks/{{ task.id }}">{{ task.title }}</a></li>
-                    {% endfor %}
-                </ul>
+                <table>
+                    <tr><th>Все задачи</th></tr>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr class="card-default">
+                            <td><a href="/tasks/{{ task.id }}">{{ task.title }}</a></td>
+                            <td>
+                                <form action="/tasks/{{ task.id }}/delete" method="POST">
+                                    <input type="submit" class="btn" value="Удалить" />
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

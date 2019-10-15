@@ -30,12 +30,12 @@ def get_user_by_login(login):
     return User.query.filter(User.login == login).first()
 
 def remove_task(user_id, task_id):
-    if task.user_id != user_id:
-        return
     task = get_task_by_id(task_id)
-    if (task == None):
+    print(user_id)
+    if (task == None or task.user_id != user_id):
         return
     db_session.delete(task)
+    db_session.commit()
 
 def validate_login(login):
     forbiddenchars = set('@')
@@ -48,12 +48,9 @@ def validate_password(password):
 def validate_task_title(title):
     return title.strip() != ''
 
-def update_task(user_id, task_id, title, description):
-    if task.user_id != user_id:
+def update_task(user_id, task, title, description):
+    if not task or task.user_id != user_id:
         return task
-    task = get_task_by_id(task_id)
-    if (task == None):
-        return None
     task.title = title
     task.description = description
     db_session.commit()

@@ -4,8 +4,9 @@
 <section class="card card-default w-50 mx-auto">
     <h4 class="card-header">Редактирование задачи</h4>
 
-    {% if error %}
-    <form action="/login" method="POST" class="card-body">
+    
+    <form action="/tasks/{{task.id}}" method="POST" class="card-body">
+        {% if error %}
         <div class="alert alert-danger">
             {{ error }}
         </div>
