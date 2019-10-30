@@ -136,10 +136,12 @@ def task_update(id):
         eror="Требуется ввести заголовок задачи"
     elif not validate_task_title(request.form['title']):
         error="Заголовок задачи пуст или содержит запрещённые символы"
-    elif get_task_by_title(request.form['title'], session['user_id']).id != task.id:
-        error="Задача с таким заголовком уже используется"
     else:
-        task = update_task(user_id, task, request.form['title'], request.form['description'])
+        someTask = get_task_by_title(request.form['title'], session['user_id'])
+        if someTask.id != task.id:
+            error="Задача с таким заголовком уже используется"
+        else:
+            task = update_task(user_id, task, request.form['title'], request.form['description'])
     if not error:
         return redirect(url_for('tasks'))
     else:
